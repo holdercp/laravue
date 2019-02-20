@@ -22,10 +22,10 @@ class CategoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        //
-    }
+    // public function create()
+    // {
+    //     //
+    // }
 
     /**
      * Store a newly created resource in storage.
@@ -35,7 +35,12 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        return response()->json(['status' => true, 'message' => 'Category Created']);
+        $category = Category::create($request->only('name'));
+
+        return response()->json([
+            'status' => (bool) $category,
+            'message' => $category ? 'Category Created' : 'Error Creating Category'
+        ]);
     }
 
     /**
@@ -46,7 +51,7 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
-        //
+        return response()->json($category);
     }
 
     /**
@@ -55,10 +60,10 @@ class CategoryController extends Controller
      * @param  \App\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function edit(Category $category)
-    {
-        //
-    }
+    // public function edit(Category $category)
+    // {
+    //     //
+    // }
 
     /**
      * Update the specified resource in storage.
@@ -69,7 +74,12 @@ class CategoryController extends Controller
      */
     public function update(Request $request, Category $category)
     {
-        //
+        $status = $category->update($request->only('name'));
+
+        return response()->json([
+            'status' => $status,
+            'message' => $status ? 'Category Updated' : 'Error Updating Category'
+        ]);
     }
 
     /**
@@ -80,6 +90,16 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        return response()->json(['status' => true, 'message' => 'Category Deleted']);
+        $status = $category->delete();
+
+        return response()->json([
+            'status' => $status,
+            'message' => $status ? 'Category Deleted' : 'Error Deleting Category'
+        ]);
+    }
+
+    public function tasks(Category $category)
+    {
+        return response()->json($category->tasks()->orderBy('order')->get());
     }
 }
