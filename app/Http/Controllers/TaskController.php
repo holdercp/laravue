@@ -38,7 +38,7 @@ class TaskController extends Controller
         $task = Task::create(
             [
                 'name' => $request->name,
-                'cateogry_id' => $request->category_id,
+                'category_id' => $request->category_id,
                 'user_id' => $request->user_id,
                 'order' => $request->order
             ]
